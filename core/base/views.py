@@ -48,7 +48,7 @@ class CreateTicket(View, LoginRequiredMixin):
         subject = ticket_form.cleaned_data['subject']
         message = ticket_form.cleaned_data['message']
         priority = ticket_form.cleaned_data['priority']
-        attachment = request.FILES['attachment']
+        attachment = request.FILES.get('attachment')
 
         ticket_service = TicketService(user)
         data, is_verified = ticket_service.create_ticket(
@@ -103,7 +103,7 @@ class TicketDetail(View, LoginRequiredMixin):
             return render(request, 'base/detail.html', context={'form': ticket_form})
         
         message = ticket_form.cleaned_data['message']
-        attachment = request.FILES['attachment']
+        attachment = request.FILES.get('attachment')
         
         ticket_service = TicketService(user)
         data, is_verified = ticket_service.reply_ticket(
