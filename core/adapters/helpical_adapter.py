@@ -66,7 +66,7 @@ class HelpicalAdapter:
             "importance": priority
         })
 
-        
+        print(data)
         headers = {
             'X-Api-Key': self.secret_key,
             'Content-Type': 'application/json'
@@ -80,12 +80,32 @@ class HelpicalAdapter:
         print(data)
         return data, is_verified
 
-    def create_attachment(self):
-        ...
+    def create_attachment(self, content_id, filename):
+        
+        data = {
+            "content_id": content_id,
+        }
+
+        files = [
+            ('attachment[]', (filename.name, filename.file, filename.content_type)),
+        ]
+
+        print(data, files)
+        headers = {
+            'X-Api-Key': self.secret_key,
+        }
+
+        response = requests.request("POST", self.create_attachment_url, headers=headers, data=data, files=files)
+
+        is_verified = response.status_code == 201
+        print(response.status_code)
+        data = response.json()
+        print(data)
+        return data, is_verified
 
     def create_reply(self, user, ticket_id, message):
         data = json.dumps({
-            "customer_id": 29,
+            "customer_id": user.helpical_id,
             "customer_username": "",
             "customer_email": "",
             "ticket_id": ticket_id,
@@ -132,7 +152,7 @@ class HelpicalAdapter:
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("GET", self.ticket_detail_url.format(ticket_id, 29), headers=headers)
+        response = requests.request("GET", self.ticket_detail_url.format(ticket_id, user.helpical_id), headers=headers)
 
         is_verified = response.status_code == 200
         print(response.status_code)

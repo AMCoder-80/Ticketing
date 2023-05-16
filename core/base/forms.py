@@ -5,8 +5,8 @@ class TicketForm(forms.Form):
 
     subject = forms.CharField(max_length=255)
     message = forms.CharField(widget=forms.Textarea)
-    attachment = forms.FileField()
-    priority = forms.ChoiceField(choices=[
+    attachment = forms.FileField(required=False)
+    priority = forms.ChoiceField(required=False, choices=[
         ('l', 'پایین'),
         ('n', 'متوسط'),
         ('h', 'بالا'),

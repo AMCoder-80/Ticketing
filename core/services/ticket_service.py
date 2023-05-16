@@ -8,10 +8,32 @@ class TicketService:
         self.user = user
 
     
-    def create_ticket(self):
-        ...
+    def create_ticket(self, subject, message, priority, attachment):
+        
+        data, is_verified = self.helpical_adapter.create_ticket(
+            user=self.user,
+            subject=subject,
+            message=message,
+            priority=priority
+            )
+        
+        if not is_verified:
+            return 'someting went wrong', is_verified
+        
+        content_id = data['returned_values'][0]['content_id']
+        print(attachment)
 
-    def reply_ticket(self, pk, message):
+        data, is_verified = self.helpical_adapter.create_attachment(
+            content_id=content_id,
+            filename=attachment,
+        )
+
+        if not is_verified:
+            return 'someting went wrong in attaching file', is_verified
+        
+        return data, is_verified
+
+    def reply_ticket(self, pk, message, attachment):
 
         data, is_verified = self.helpical_adapter.create_reply(
             user=self.user,
@@ -22,8 +44,18 @@ class TicketService:
         if not is_verified:
             return 'someting went wrong', is_verified
         
-        return data, is_verified
+        content_id = data['returned_values'][0]['content_id']
 
+        data, is_verified = self.helpical_adapter.create_attachment(
+            content_id=content_id,
+            filename=attachment,
+        )
+
+        if not is_verified:
+            return 'someting went wrong in attaching file', is_verified
+        
+        return data, is_verified
+        
     def list_tickets(self):
         
         data, is_verified = self.helpical_adapter.list_tickets(self.user)
