@@ -78,6 +78,7 @@ class TicketDetail(View, LoginRequiredMixin):
 
         context = {
             'form': ticket_form,
+            'tickets': data,
             'is_verified': is_verified
         }
         return render(request, 'base/detail.html', context=context)

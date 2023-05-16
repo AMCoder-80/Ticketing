@@ -1,0 +1,14 @@
+<p>These are errors</p>
+<p>{{ errors }}</p>
+
+
+{% for ticket in tickets %}
+
+    <hr>
+    <p>{{ ticket.writer_img }}</p>
+    <p>{{ ticket.writer_name }}</p>
+    <p>{{ ticket.created_date }}</p>
+    <p>{{ ticket.message }}</p>
+    <p>{{ ticket.attachment }}</p>
+
+{% endfor %}

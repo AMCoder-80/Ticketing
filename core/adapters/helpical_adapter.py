@@ -116,8 +116,8 @@ class HelpicalAdapter:
             'X-Api-Key': self.secret_key,
             'Content-Type': 'application/json'
         }
-        print(self.list_tickets_url.format(29), '-----------')
-        response = requests.request("GET", self.list_tickets_url.format(29), headers=headers)
+
+        response = requests.request("GET", self.list_tickets_url.format(user.helpical_id), headers=headers)
 
         is_verified = response.status_code == 200
         print(response.status_code)
@@ -132,7 +132,7 @@ class HelpicalAdapter:
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("GET", self.ticket_detail_url.format(ticket_id, user.helpical_id), headers=headers)
+        response = requests.request("GET", self.ticket_detail_url.format(ticket_id, 29), headers=headers)
 
         is_verified = response.status_code == 200
         print(response.status_code)
