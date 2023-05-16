@@ -76,11 +76,19 @@ class TicketDetail(View, LoginRequiredMixin):
 
         ticket_form = TicketForm()
 
-        context = {
-            'form': ticket_form,
-            'tickets': data,
-            'is_verified': is_verified
-        }
+        if is_verified:
+            context = {
+                'form': ticket_form,
+                'tickets': data,
+                'errros': None
+            }
+        else:
+            context = {
+                'form': ticket_form,
+                'tickets': None,
+                'errros': data
+            }
+
         return render(request, 'base/detail.html', context=context)
 
     def post(self, request, pk, *args, **kwargs):
@@ -92,16 +100,12 @@ class TicketDetail(View, LoginRequiredMixin):
         if not ticket_form.is_valid():
             return render(request, 'base/detail.html', context={'form': ticket_form})
         
-        subject = ticket_form.cleaned_data['subject']
         message = ticket_form.cleaned_data['message']
-        priority = ticket_form.cleaned_data['priority']
         
         ticket_service = TicketService(user)
         data, is_verified = ticket_service.reply_ticket(
             pk=pk,
-            subject=subject,
             message=message,
-            priority=priority
         )
 
         context = {

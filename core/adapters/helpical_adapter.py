@@ -85,7 +85,7 @@ class HelpicalAdapter:
 
     def create_reply(self, user, ticket_id, message):
         data = json.dumps({
-            "customer_id": user.helpical_id,
+            "customer_id": 29,
             "customer_username": "",
             "customer_email": "",
             "ticket_id": ticket_id,
@@ -93,7 +93,7 @@ class HelpicalAdapter:
             "reply_and_close": "0"
         })
 
-        
+        print(data)
         headers = {
             'X-Api-Key': self.secret_key,
             'Content-Type': 'application/json'

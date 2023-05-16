@@ -11,8 +11,18 @@ class TicketService:
     def create_ticket(self):
         ...
 
-    def reply_ticket(self):
-        ...
+    def reply_ticket(self, pk, message):
+
+        data, is_verified = self.helpical_adapter.create_reply(
+            user=self.user,
+            ticket_id=pk,
+            message=message,
+            )
+        
+        if not is_verified:
+            return 'someting went wrong', is_verified
+        
+        return data, is_verified
 
     def list_tickets(self):
         
