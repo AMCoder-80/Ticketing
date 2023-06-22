@@ -51,6 +51,9 @@ def Get_Customer_Id_API(context):
       'Content-Type': 'application/json'
     }
     try:
+      print('\n\n')
+      print(context)
+      print('\n\n')
       response = requests.request("POST", url, headers=headers, data=payload)
       return json.loads(response.text)
   
@@ -81,18 +84,13 @@ def schedule_Customer_Generation():
                 "lname": obj.L_name,
                 "email": obj.user.email,
                 "org_id": "1",
-                "mobile": "",
+                "mobile": obj.phone,
                 "password": obj.phone,
-                "info": "",
                 "level": "3",
-                "expire_date": "",
-                "tel": "",
-                "internal_code": "",
                 "position": "student",
-                "username": "",
-                "org_admin": "1"
               }
         response = Get_Customer_Id_API(context)
+        print(response)
         if response["status_code"] != 201:
           obj.failed_to_create_customer = True
           obj.save()
